@@ -1,20 +1,14 @@
-import Home from "./compoments/home";
+import React from "react";
+import Home from "../components/Home";
+import Footer from "./html/footer"; // import øverst
 
 function App() {
   return (
     <div>
       <Home />
+      <Footer />
     </div>
-import Footer from "./html/footer";
-
-export default function App() {
-  return (
-    <>
-      <h1>hej</h1>
-      <Footer></Footer>
-    </>
   );
 }
 
 export default App;
-
