@@ -1,14 +1,11 @@
-import React from "react";
-import Home from "../components/Home";
-import Footer from "./html/footer"; // import øverst
+import Home from "./components/home";
+import Footer from "./html/footer";
 
-function App() {
+export default function App() {
   return (
-    <div>
-      <Home />
-      <Footer />
-    </div>
+    <>
+      <Home></Home>
+      <Footer></Footer>
+    </>
   );
 }
-
-export default App;

@@ -1,3 +1,5 @@
+@use "variables.scss" as *;
+
 * {
     margin: 0;
     padding: 0;
@@ -5,111 +7,111 @@
 }
 
 .home {
-  background: #0f172a;
-  min-height: 100vh;
-  color: white;
-  padding: 20px;
-  font-family: sans-serif;
+    background: $background-color;
+    min-height: 100vh;
+    color: white;
+    padding: 20px;
+    font-family: sans-serif;
 }
 
 .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .welcome {
-  color: #9ca3af;
-  font-size: 14px;
+    color: #9ca3af;
+    font-size: 14px;
 }
 
 .profile-pic {
-  width: 45px;
-  height: 45px;
-  border-radius: 10px;
-  background: #374151;
+    width: 45px;
+    height: 45px;
+    border-radius: 10px;
+    background: #374151;
 }
 
 .search-bar {
-  margin: 20px 0;
+    margin: 20px 0;
 }
 
 .search-bar input {
-  width: 100%;
-  padding: 14px;
-  border-radius: 10px;
-  border: none;
-  background: #1f2937;
-  color: white;
+    width: 100%;
+    padding: 14px;
+    border-radius: 10px;
+    border: none;
+    background: #1f2937;
+    color: white;
 }
 
 .section {
-  margin-top: 30px;
+    margin-top: 30px;
 }
 
 .section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .section-header span {
-  color: #9ca3af;
-  font-size: 14px;
+    color: #9ca3af;
+    font-size: 14px;
 }
 
 .coming-card {
-  margin-top: 15px;
+    margin-top: 15px;
 }
 
 .image-placeholder {
-  width: 100%;
-  height: 180px;
-  background: #374151;
-  border-radius: 15px;
+    width: 100%;
+    height: 180px;
+    background: #374151;
+    border-radius: 15px;
 }
 
 .movie-info {
-  margin-top: 10px;
+    margin-top: 10px;
 }
 
 .movie-info p {
-  color: #9ca3af;
-  font-size: 14px;
+    color: #9ca3af;
+    font-size: 14px;
 }
 
 .cinema-card {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: #1f2937;
-  padding: 12px;
-  border-radius: 12px;
-  margin-top: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #1f2937;
+    padding: 12px;
+    border-radius: 12px;
+    margin-top: 15px;
 }
 
 .cinema-logo {
-  width: 50px;
-  height: 50px;
-  background: #374151;
-  border-radius: 10px;
+    width: 50px;
+    height: 50px;
+    background: #374151;
+    border-radius: 10px;
 }
 
 .cinema-info {
-  flex: 1;
-  margin-left: 12px;
+    flex: 1;
+    margin-left: 12px;
 }
 
 .distance {
-  color: #60a5fa;
-  font-size: 13px;
+    color: #60a5fa;
+    font-size: 13px;
 }
 
 .closed {
-  color: #9ca3af;
-  font-size: 13px;
+    color: #9ca3af;
+    font-size: 13px;
 }
 
 .rating {
-  font-weight: bold;
+    font-weight: bold;
 }
