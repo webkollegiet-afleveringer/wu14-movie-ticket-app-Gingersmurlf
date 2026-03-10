@@ -1,7 +1,12 @@
-export default function App() {
+import Home from "./compoments/home";
+
+function App() {
   return (
-    <>
-      <h1>hej theodor, du ligner en ginger</h1>
-    </>
+    <div>
+      <Home />
+    </div>
   );
 }
+
+export default App;
+
