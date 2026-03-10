@@ -1,9 +1,11 @@
+@use "./footer.scss";
+@use "./home.scss";
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-@use "./footer.scss";
 
 .active path {
     fill: #54a8e5;
