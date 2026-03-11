@@ -4,6 +4,7 @@ import { NOW_PLAYING_URL, API_OPTIONS } from "../components/api/tmdb";
 
 const Home = () => {
   const [movies, setMovies] = useState([]);
+  const moviesToShow = movies.slice(0, 4);
 
   useEffect(() => {
     fetch(NOW_PLAYING_URL, API_OPTIONS)
@@ -23,7 +24,7 @@ const Home = () => {
         </div>
 
         <div className="profile-pic">
-          {/* profile image here */}
+          {/* logo skal være her */}
         </div>
       </div>
 
@@ -32,24 +33,23 @@ const Home = () => {
         <input type="text" placeholder="Search your favourite movie" />
       </div>
 
-      {/* Coming Soon - Dynamiske film fra API */}
+      {/*Billederne fra API */}
       <div className="section">
         <h3>Coming Soon</h3>
 
         <div className="coming-cards-container">
-          {movies.length > 0 ? (
-            movies.map((movie) => (
-              <div className="coming-card" key={movie.id}>
-                <div className="image-placeholder">
-                  {movie.poster_path ? (
-                    <img
-                      src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                      alt={movie.title}
-                    />
-                  ) : (
-                    <div className="no-image">No Image</div>
-                  )}
-                </div>
+          {moviesToShow.length > 0 ? (
+            moviesToShow.map((movie) => (
+              <div
+                className="coming-card"
+                key={movie.id}
+                style={{
+                  backgroundImage: movie.poster_path
+                    ? `url(https://image.tmdb.org/t/p/w500${movie.poster_path})`
+                    : "none",
+                }}
+              >
+                <div className="card-overlay" />
 
                 <div className="movie-info">
                   <h4>{movie.title}</h4>

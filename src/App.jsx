@@ -1,11 +1,11 @@
-import Home from "./components/home";
+import { Outlet } from "react-router";
 import Footer from "./html/footer";
 
 export default function App() {
   return (
     <>
-      <Home></Home>
-      <Footer></Footer>
+      <Outlet />
+      <Footer />
     </>
   );
 }
