@@ -14,6 +14,12 @@ const MOVIE = {
     "Martial-arts master Shang-Chi confronts the past he thought he left behind when he's drawn into the Ten Rings organization and forced to face his father.",
   poster_path: "/1BIoJGKbXjdFDAqUEiA2VHqkK1Z.jpg",
   backdrop_path: "/xcI4NprR0Rjrs4DIS4K0XrbA0xQ.jpg",
+  gallery: [
+    "/1BIoJGKbXjdFDAqUEiA2VHqkK1Z.jpg",
+    "/xcI4NprR0Rjrs4DIS4K0XrbA0xQ.jpg",
+    "/oJGbp5eqfXKGsXQ15sJn0xt4MGy.jpg",
+    "/8GbmMZcT5fxCWiVkvvQ1dChWvPL.jpg",
+  ],
 };
 
 function formatStars(voteAverage) {
@@ -25,9 +31,10 @@ function formatStars(voteAverage) {
 export default function Details() {
   const navigate = useNavigate();
   const [showFullSynopsis, setShowFullSynopsis] = useState(false);
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
 
   const backdrop = `${IMAGE_BASE}${MOVIE.backdrop_path}`;
-  const poster = `${IMAGE_BASE}${MOVIE.poster_path}`;
+  const poster = `${IMAGE_BASE}${MOVIE.gallery[activeImageIndex]}`;
 
   const synopsisPreview = useMemo(() => {
     if (showFullSynopsis) return MOVIE.synopsis;
@@ -59,6 +66,19 @@ export default function Details() {
       <main className="details-main">
         <div className="poster-wrapper">
           <img className="poster" src={poster} alt={MOVIE.title} />
+
+          <div className="gallery">
+            {MOVIE.gallery.map((path, index) => (
+              <button
+                key={path}
+                type="button"
+                className={`gallery-item ${index === activeImageIndex ? "active" : ""}`}
+                onClick={() => setActiveImageIndex(index)}
+              >
+                <img src={`${IMAGE_BASE}${path}`} alt={`${MOVIE.title} still ${index + 1}`} />
+              </button>
+            ))}
+          </div>
         </div>
 
         <div className="info">
