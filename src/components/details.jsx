@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import "../scss/details.scss";
 
 const IMAGE_BASE = "https://image.tmdb.org/t/p/w500";
@@ -19,6 +19,8 @@ const MOVIE = {
     "/xcI4NprR0Rjrs4DIS4K0XrbA0xQ.jpg",
     "/oJGbp5eqfXKGsXQ15sJn0xt4MGy.jpg",
     "/8GbmMZcT5fxCWiVkvvQ1dChWvPL.jpg",
+    "/fgJ3tIH6AB4dUxjmN8ok1tEeGQ.jpg",
+    "/4d0PpNI0kmP58hgrwGC3wCjxbiR.jpg",
   ],
 };
 
@@ -30,8 +32,13 @@ function formatStars(voteAverage) {
 
 export default function Details() {
   const navigate = useNavigate();
+  const { imageIndex } = useParams();
   const [showFullSynopsis, setShowFullSynopsis] = useState(false);
-  const [activeImageIndex, setActiveImageIndex] = useState(0);
+
+  const initialImageIndex = Number.isFinite(Number(imageIndex))
+    ? Math.max(0, Math.min(MOVIE.gallery.length - 1, Number(imageIndex)))
+    : 0;
+  const [activeImageIndex, setActiveImageIndex] = useState(initialImageIndex);
 
   const backdrop = `${IMAGE_BASE}${MOVIE.backdrop_path}`;
   const poster = `${IMAGE_BASE}${MOVIE.gallery[activeImageIndex]}`;
