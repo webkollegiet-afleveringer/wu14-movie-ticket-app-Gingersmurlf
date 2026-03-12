@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router";
 import "../scss/explore.scss";
 import { NOW_PLAYING_URL, API_OPTIONS } from "./api/tmdb";
 
@@ -12,6 +13,7 @@ function formatStars(voteAverage) {
 }
 
 export default function Explore() {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("now");
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -75,8 +77,12 @@ export default function Explore() {
           {loading ? (
             <div className="loading">Loading...</div>
           ) : (
-            topMovies.map((movie) => (
-              <div className="card" key={movie.id}>
+            topMovies.map((movie, index) => (
+              <div
+                className="card"
+                key={movie.id}
+                onClick={() => navigate(`/details/${index}`)}
+              >
                 <div
                   className="card-poster"
                   style={{
@@ -105,8 +111,12 @@ export default function Explore() {
           {loading ? (
             <div className="loading">Loading...</div>
           ) : (
-            recommendedMovies.map((movie) => (
-              <div className="card" key={movie.id}>
+            recommendedMovies.map((movie, index) => (
+              <div
+                className="card"
+                key={movie.id}
+                onClick={() => navigate(`/details/${index + 4}`)}
+              >
                 <div
                   className="card-poster"
                   style={{
