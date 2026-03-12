@@ -71,7 +71,7 @@ export default function Explore() {
           <span>See more</span>
         </div>
 
-        <div className="card-row top-movies">
+        <div className="card-row">
           {loading ? (
             <div className="loading">Loading...</div>
           ) : (

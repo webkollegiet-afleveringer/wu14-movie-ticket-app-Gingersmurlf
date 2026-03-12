@@ -37,7 +37,7 @@ export default function Footer() {
           </NavLink>
         </li>
         <li>
-          <NavLink to="/">
+          <NavLink to="/details">
             <svg
               width="16"
               height="20"
