@@ -6,6 +6,8 @@ import App from "./App.jsx";
 import Home from "./components/home";
 import Explore from "./components/explore";
 import Details from "./components/details";
+import Ticket from "./components/ticket";
+import Settings from "./components/settings.jsx";
 
 import "./scss/style.scss";
 
@@ -15,7 +17,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <Route path="/" element={<App />}>
         <Route index element={<Home />} />
         <Route path="explore" element={<Explore />} />
-        <Route path="details/:imageIndex?" element={<Details />} />
+        <Route path="details/:id" element={<Details />} />
+        <Route path="ticket/:id" element={<Ticket />} />
+        <Route path="settings" element={<Settings />} />
       </Route>
     </Routes>
   </BrowserRouter>,

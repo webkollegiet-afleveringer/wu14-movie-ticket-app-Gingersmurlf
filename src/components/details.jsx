@@ -1,128 +1,115 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import "../scss/details.scss";
+import { API_OPTIONS } from "./api/tmdb";
 
 const IMAGE_BASE = "https://image.tmdb.org/t/p/w500";
 
-const MOVIE = {
-  title: "Shang - Chi",
-  director: "Destin Daniel Cretton",
-  rating: 4.9,
-  genres: ["Action", "Fiction Fantasy"],
-  runtime: "02h 43m",
-  synopsis:
-    "Martial-arts master Shang-Chi confronts the past he thought he left behind when he's drawn into the Ten Rings organization and forced to face his father.",
-  poster_path: "/1BIoJGKbXjdFDAqUEiA2VHqkK1Z.jpg",
-  backdrop_path: "/xcI4NprR0Rjrs4DIS4K0XrbA0xQ.jpg",
-  gallery: [
-    "/1BIoJGKbXjdFDAqUEiA2VHqkK1Z.jpg",
-    "/xcI4NprR0Rjrs4DIS4K0XrbA0xQ.jpg",
-    "/oJGbp5eqfXKGsXQ15sJn0xt4MGy.jpg",
-    "/8GbmMZcT5fxCWiVkvvQ1dChWvPL.jpg",
-    "/fgJ3tIH6AB4dUxjmN8ok1tEeGQ.jpg",
-    "/4d0PpNI0kmP58hgrwGC3wCjxbiR.jpg",
-  ],
-};
-
 function formatStars(voteAverage) {
-  const fullStars = Math.round(voteAverage);
+  const fullStars = Math.round(voteAverage / 2);
   const emptyStars = 5 - fullStars;
   return "★".repeat(fullStars) + "☆".repeat(emptyStars);
 }
 
 export default function Details() {
   const navigate = useNavigate();
-  const { imageIndex } = useParams();
+  const { id } = useParams();
+
+  const [movie, setMovie] = useState(null);
   const [showFullSynopsis, setShowFullSynopsis] = useState(false);
 
-  const initialImageIndex = Number.isFinite(Number(imageIndex))
-    ? Math.max(0, Math.min(MOVIE.gallery.length - 1, Number(imageIndex)))
-    : 0;
-  const [activeImageIndex, setActiveImageIndex] = useState(initialImageIndex);
+  useEffect(() => {
+    if (!id) return;
 
-  const backdrop = `${IMAGE_BASE}${MOVIE.backdrop_path}`;
-  const poster = `${IMAGE_BASE}${MOVIE.gallery[activeImageIndex]}`;
+    fetch(`https://api.themoviedb.org/3/movie/${id}`, API_OPTIONS)
+      .then((res) => res.json())
+      .then((data) => setMovie(data))
+      .catch((err) => console.error("Fejl ved hentning af film:", err));
+  }, [id]);
 
   const synopsisPreview = useMemo(() => {
-    if (showFullSynopsis) return MOVIE.synopsis;
-    return MOVIE.synopsis.length > 120 ? `${MOVIE.synopsis.slice(0, 120)}...` : MOVIE.synopsis;
-  }, [showFullSynopsis]);
+    if (!movie) return "";
+
+    if (showFullSynopsis) return movie.overview;
+
+    return movie.overview?.length > 120
+      ? `${movie.overview.slice(0, 120)}...`
+      : movie.overview;
+  }, [showFullSynopsis, movie]);
+
+  if (!movie) {
+    return (
+      <div className="details loading">
+        <div className="details-loading">Loading...</div>
+      </div>
+    );
+  }
+
+  const backdrop = `${IMAGE_BASE}${movie.backdrop_path}`;
+  const poster = `${IMAGE_BASE}${movie.poster_path}`;
+
+  const handleBookTicket = () => {
+    navigate(`/ticket/${movie.id}`);
+  };
 
   return (
     <div className="details" style={{ "--details-bg": `url(${backdrop})` }}>
       <header className="details-header">
-        <button type="button" className="icon-btn back" onClick={() => navigate(-1)} aria-label="Back">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </button>
-
-        <button type="button" className="icon-btn bookmark" aria-label="Bookmark">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M6 3h12a1 1 0 011 1v18l-7-5-7 5V4a1 1 0 011-1z"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+        <button
+          type="button"
+          className="icon-btn back"
+          onClick={() => navigate(-1)}
+        >
+          Back
         </button>
       </header>
 
       <main className="details-main">
         <div className="poster-wrapper">
-          <img className="poster" src={poster} alt={MOVIE.title} />
-
-          <div className="gallery">
-            {MOVIE.gallery.map((path, index) => (
-              <button
-                key={path}
-                type="button"
-                className={`gallery-item ${index === activeImageIndex ? "active" : ""}`}
-                onClick={() => setActiveImageIndex(index)}
-              >
-                <img src={`${IMAGE_BASE}${path}`} alt={`${MOVIE.title} still ${index + 1}`} />
-              </button>
-            ))}
-          </div>
+          <img className="poster" src={poster} alt={movie.title} />
         </div>
 
         <div className="info">
-          <h1 className="title">{MOVIE.title}</h1>
+          <h1 className="title">{movie.title}</h1>
 
           <div className="meta">
-            <div className="director">
-              Director: <span>{MOVIE.director}</span>
-            </div>
             <div className="rating">
-              <span className="stars">{formatStars(MOVIE.rating)}</span>
-              <span className="rating-number">{MOVIE.rating.toFixed(1)}</span>
+              <span className="stars">{formatStars(movie.vote_average)}</span>
+              <span className="rating-number">
+                {movie.vote_average.toFixed(1)}
+              </span>
             </div>
           </div>
 
           <div className="tags">
-            {MOVIE.genres.map((genre) => (
-              <span key={genre} className="tag">
-                {genre}
+            {movie.genres?.map((genre) => (
+              <span key={genre.id} className="tag">
+                {genre.name}
               </span>
             ))}
-            <span className="tag runtime">{MOVIE.runtime}</span>
+
+            <span className="tag runtime">
+              {Math.floor(movie.runtime / 60)}h {movie.runtime % 60}m
+            </span>
           </div>
 
           <div className="synopsis">
             <h2>Synopsis</h2>
             <p>
               {synopsisPreview}
-              {MOVIE.synopsis.length > 120 ? (
-                <button type="button" className="read-more" onClick={() => setShowFullSynopsis((v) => !v)}>
+
+              {movie.overview?.length > 120 && (
+                <button
+                  className="read-more"
+                  onClick={() => setShowFullSynopsis((v) => !v)}
+                >
                   {showFullSynopsis ? " Show Less" : " Read More"}
                 </button>
-              ) : null}
+              )}
             </p>
           </div>
 
-          <button type="button" className="primary-btn">
+          <button className="primary-btn" onClick={handleBookTicket}>
             Book Ticket
           </button>
         </div>
