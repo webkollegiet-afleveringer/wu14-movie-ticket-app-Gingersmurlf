@@ -17,7 +17,7 @@ export default function Checkout() {
 
   const handlePayNow = () => {
     console.log("Payment info:", { email, cardHolder, cardNumber, cardDate, cvv });
-    navigate("/success");
+    navigate("/payment");
   };
 
   return (

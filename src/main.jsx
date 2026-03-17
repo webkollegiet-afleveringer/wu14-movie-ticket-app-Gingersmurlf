@@ -9,6 +9,7 @@ import Details from "./components/details";
 import Seats from "./components/seats";
 import Settings from "./components/settings";
 import Checkout from "./components/checkout";
+import Payment from "./components/payment";
 
 import "./scss/style.scss";
 
@@ -22,6 +23,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="ticket/:id" element={<Seats />} />
         <Route path="settings" element={<Settings />} />
         <Route path="checkout" element={<Checkout />} />
+        <Route path="payment" element={<Payment />} />
       </Route>
     </Routes>  
   </BrowserRouter>,
