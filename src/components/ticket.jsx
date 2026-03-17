@@ -6,8 +6,15 @@ export default function Ticket() {
   const navigate = useNavigate();
 
   const [cinema, setCinema] = useState("Empire XXI Yogyakarta");
-  const [date, setDate] = useState("02 Nov 2021");
+  const [date, setDate] = useState("02 Nov 2026");
   const [time, setTime] = useState("01.00 PM");
+
+  const handleBookTicket = () => {
+    console.log("Ticket booked:", cinema, date, time);
+
+    // eksempel: naviger til næste side
+    navigate("/seats");
+  };
 
   return (
     <div className="ticket">
@@ -33,9 +40,9 @@ export default function Ticket() {
           <div className="field">
             <label>Date</label>
             <select value={date} onChange={(e) => setDate(e.target.value)}>
-              <option>02 Nov 2021</option>
-              <option>03 Nov 2021</option>
-              <option>04 Nov 2021</option>
+              <option>02 Nov 2026</option>
+              <option>03 Nov 2026</option>
+              <option>04 Nov 2026</option>
             </select>
           </div>
 
@@ -49,6 +56,12 @@ export default function Ticket() {
           </div>
         </div>
       </div>
+
+      <section className="btn">
+        <button className="primary-btn" onClick={handleBookTicket}>
+          Checkout
+        </button>
+      </section>
     </div>
   );
 }

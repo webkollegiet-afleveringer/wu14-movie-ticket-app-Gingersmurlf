@@ -40,9 +40,9 @@
   flex-direction: column;
   gap: 8px;
 
-  label {
+  label {   
     font-size: 14px;
-    color: #9ca3af;
+    color: #FFFFFF;
   }
 
   select {
@@ -63,4 +63,21 @@
   .field {
     flex: 1;
   }
+}
+
+.primary-btn {
+    margin-top: 20px;
+    width: 100%;
+    max-width: 360px;
+    padding: 14px 18px;
+    border: none;
+    border-radius: 14px;
+    background: #3b82f6;
+    color: white;
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: 0.01em;
+    cursor: pointer;
+    box-shadow: 0 14px 26px rgba(59, 130, 246, 0.35);
+    transition: transform 150ms ease, background 150ms ease;
 }
