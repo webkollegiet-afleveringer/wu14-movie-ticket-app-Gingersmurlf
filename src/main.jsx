@@ -6,9 +6,9 @@ import App from "./App.jsx";
 import Home from "./components/home";
 import Explore from "./components/explore";
 import Details from "./components/details";
-import Ticket from "./components/ticket";
-import Settings from "./components/settings.jsx";
-import Checkout from "./components/checkout.jsx";
+import Seats from "./components/seats";
+import Settings from "./components/settings";
+import Checkout from "./components/checkout";
 
 import "./scss/style.scss";
 
@@ -19,10 +19,10 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route index element={<Home />} />
         <Route path="explore" element={<Explore />} />
         <Route path="details/:id" element={<Details />} />
-        <Route path="ticket/:id" element={<Ticket />} />
+        <Route path="ticket/:id" element={<Seats />} />
         <Route path="settings" element={<Settings />} />
-        { <Route path="checkout" element={<Checkout />} />}
+        <Route path="checkout" element={<Checkout />} />
       </Route>
-    </Routes>
+    </Routes>  
   </BrowserRouter>,
 );
