@@ -4,17 +4,21 @@
     position: relative;
     min-height: 100vh;
     padding: 20px;
-    background: $background-color;
+    background-color: $background-color;
     color: white;
     font-family: sans-serif;
     overflow: hidden;
+    background: #1B1E25;
 }
 
 .details::before {
     content: "";
     position: fixed;
     inset: 0;
-    background: var(--details-bg) center/cover no-repeat;
+    background-image: var(--details-bg);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
     filter: blur(18px) brightness(0.35);
     z-index: -2;
 }
