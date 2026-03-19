@@ -12,13 +12,13 @@ app.use(express.json());
 /* ---------------- MOVIES ---------------- */
 
 // GET all movies
-app.get("/movies", async (req, res) => {
+app.get("/api/movies", async (req, res) => {
   const data = await sql`SELECT * FROM cinema.movies`;
   res.json(data);
 });
 
 // POST movie
-app.post("/movies", async (req, res) => {
+app.post("/api/movies", async (req, res) => {
   const { title, release_year } = req.body;
 
   const result = await sql`
@@ -31,12 +31,12 @@ app.post("/movies", async (req, res) => {
 
 /* ---------------- CINEMAS ---------------- */
 
-app.get("/cinemas", async (req, res) => {
+app.get("/api/cinemas", async (req, res) => {
   const data = await sql`SELECT * FROM cinema.cinemas`;
   res.json(data);
 });
 
-app.post("/cinemas", async (req, res) => {
+app.post("/api/cinemas", async (req, res) => {
   const { name, location } = req.body;
 
   const result = await sql`
@@ -49,12 +49,12 @@ app.post("/cinemas", async (req, res) => {
 
 /* ---------------- SCREENS ---------------- */
 
-app.get("/screens", async (req, res) => {
+app.get("/api/screens", async (req, res) => {
   const data = await sql`SELECT * FROM cinema.screens`;
   res.json(data);
 });
 
-app.post("/screens", async (req, res) => {
+app.post("/api/screens", async (req, res) => {
   const { cinema_id, name } = req.body;
 
   const result = await sql`
@@ -67,12 +67,12 @@ app.post("/screens", async (req, res) => {
 
 /* ---------------- SEATS ---------------- */
 
-app.get("/seats", async (req, res) => {
+app.get("/api/seats", async (req, res) => {
   const data = await sql`SELECT * FROM cinema.seats`;
   res.json(data);
 });
 
-app.post("/seats", async (req, res) => {
+app.post("/api/seats", async (req, res) => {
   const { screen_id, seat_number } = req.body;
 
   const result = await sql`
@@ -85,12 +85,12 @@ app.post("/seats", async (req, res) => {
 
 /* ---------------- SHOWTIMES ---------------- */
 
-app.get("/showtimes", async (req, res) => {
+app.get("/api/showtimes", async (req, res) => {
   const data = await sql`SELECT * FROM cinema.showtimes`;
   res.json(data);
 });
 
-app.post("/showtimes", async (req, res) => {
+app.post("/api/showtimes", async (req, res) => {
   const { movie_id, screen_id, start_time } = req.body;
 
   const result = await sql`
@@ -103,12 +103,12 @@ app.post("/showtimes", async (req, res) => {
 
 /* ---------------- BOOKINGS ---------------- */
 
-app.get("/bookings", async (req, res) => {
+app.get("/api/bookings", async (req, res) => {
   const data = await sql`SELECT * FROM cinema.bookings`;
   res.json(data);
 });
 
-app.post("/bookings", async (req, res) => {
+app.post("/api/bookings", async (req, res) => {
   const { showtime_id, seat_id, user_name } = req.body;
 
   const result = await sql`
