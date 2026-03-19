@@ -6,6 +6,8 @@ const Home = () => {
   const [movies, setMovies] = useState([]);
   const moviesToShow = movies.slice(0, 4);
 
+  const [user, setUser] = useState("John Doe");
+
   useEffect(() => {
     fetch(NOW_PLAYING_URL, API_OPTIONS)
       .then((res) => res.json())
@@ -20,7 +22,7 @@ const Home = () => {
       <div className="header">
         <div>
           <p className="welcome">Welcome Back,</p>
-          <h2>Osyyy</h2>
+          <h2>{user}</h2>
         </div>
 
         <div className="profile-pic">
