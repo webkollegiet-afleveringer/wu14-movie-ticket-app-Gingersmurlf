@@ -2,117 +2,71 @@ import React, { useState } from "react";
 import "../scss/payment.scss";
 import { useNavigate } from "react-router";
 
-export default function Checkout() {
+export default function Payment() {
   const navigate = useNavigate();
-
-  const [email, setEmail] = useState("");
-  const [cardHolder, setCardHolder] = useState("");
-  const [cardNumber, setCardNumber] = useState("");
-  const [cardDate, setCardDate] = useState("");
-  const [cvv, setCvv] = useState("");
-
-  const handleNumericInput = (value, maxLength) => {
-    return value.replace(/\D/g, "").slice(0, maxLength);
-  };
-
-  const handlePayNow = () => {
-    console.log("Payment info:", { email, cardHolder, cardNumber, cardDate, cvv });
-    navigate("/success");
-  };
+  const [showSuccess, setShowSuccess] = useState(false);
 
   return (
-    <div className="checkout">
-      <header className="checkout-header">
-        <button className="back-btn" onClick={() => navigate(-1)}>←</button>
+    <div className="payment-page">
+      <header className="payment-header">
+        <button onClick={() => navigate(-1)}>←</button>
         <h1>Checkout</h1>
       </header>
 
-      <div className="payment-method-card">
-        <div className="card-top">
-          <div className="card-logo" />
-          <div className="card-logo2" />
-          <span className="change">Change</span>
-        </div>
-        
-        <div className="card-balance">$********</div>
-        <div className="card-holder">*********</div>
-        <div className="card-number">**** **** **** ****</div>
-      </div>
-
-      <div className="payment-details">
-        <h2>Payment Details</h2>
-        <div className="field">
-          <label>Email</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Your Email"
-          />
-        </div>
-        <div className="field">
-          <label>Cardholder Name</label>
-          <input
-            type="text"
-            value={cardHolder}
-            onChange={(e) => setCardHolder(e.target.value)}
-            placeholder="Cardholder Name"
-          />
-        </div>
-        <div className="field">
-          <label>Card Number</label>
-          <input
-            type="text"
-            value={cardNumber}
-            onChange={(e) => setCardNumber(handleNumericInput(e.target.value, 16))}
-            placeholder="1234 1234 1234 1234"
-          />
+      <section className="section">
+        <div className="section-title">
+          <h3>Payment Method</h3>
+          <span>Change</span>
         </div>
 
-        <div className="row">
-          <div className="field small">
-            <label>Date</label>
-            <input
-              type="text"
-              value={cardDate}
-              onChange={(e) => setCardDate(handleNumericInput(e.target.value, 4))}
-              placeholder="MMYY"
-            />
+        <div className="card">
+          <div className="card-top">
+            <div className="card-logo" />
+            <span className="balance">Balance</span>
+            <h2>$120,580.00</h2>
           </div>
-          <div className="field small">
-            <label>CVV</label>
-            <input
-              type="text"
-              value={cvv}
-              onChange={(e) => setCvv(handleNumericInput(e.target.value, 4))}
-              placeholder="123"
-            />
+
+          <div className="card-bottom">
+            <p>Card Holder</p>
+            <h4>Miles Morales</h4>
+            <span>**** **** **** 5146</span>
           </div>
         </div>
-      </div>
+      </section>
 
-      <div className="pay-now-section">
-        <button className="pay-now-btn" onClick={handlePayNow}>
-          Pay Now <span className="amount">$99.8</span>
-        </button>
-      </div>
+      <section className="section">
+        <h3>Payment Details</h3>
 
-    <div className="logo">
-        <div className="text">
-            Your payment was successful!
-        </div>
-        <div className="checkmart">
-            Adele is a Scottish heiress whose extremely
-            wealthy family owns estates and grounds.
-            When she was a teenager. Read More
-        </div>
-        <div className="box">
-            <div className="ticket">
-                <h1>See E-Ticket</h1>
+        <input placeholder="Your Email" />
+        <input placeholder="Cardholder Name" />
+      </section>
+
+      <button className="pay-btn" onClick={() => setShowSuccess(true)}>
+        Pay Now
+      </button>
+
+      {showSuccess && (
+        <div className="success-overlay">
+          <div className="success-card">
+
+            <div className="success-icon">
+              <img src="/success-icon.png" alt="success" />
             </div>
-        </div>
-    </div>
 
+            <h2>Your payment was successful</h2>
+
+            <p>
+              Adele is a Scottish heiress whose extremely wealthy family owns estates and grounds.
+              When she was a teenager. Read More
+            </p>
+
+            <button onClick={() => navigate("/ticket")}>
+              See E-Ticket
+            </button>
+
+          </div>
+        </div>
+      )}
     </div>
   );
 }
