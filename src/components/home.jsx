@@ -6,6 +6,8 @@ const Home = () => {
   const [movies, setMovies] = useState([]);
   const moviesToShow = movies.slice(0, 4);
 
+  const [user, setUser] = useState("John Doe");
+
   useEffect(() => {
     fetch(NOW_PLAYING_URL, API_OPTIONS)
       .then((res) => res.json())
@@ -15,25 +17,20 @@ const Home = () => {
 
   return (
     <div className="home">
-
-      {/* Header */}
       <div className="header">
         <div>
           <p className="welcome">Welcome Back,</p>
-          <h2>Osyyy</h2>
+          <h2>{user}</h2>
         </div>
 
         <div className="profile-pic">
-          {/* logo skal være her */}
         </div>
       </div>
 
-      {/* Search */}
       <div className="search-bar">
         <input type="text" placeholder="Search your favourite movie" />
       </div>
 
-      {/*Billederne fra API */}
       <div className="section">
         <h3>Coming Soon</h3>
 
@@ -63,7 +60,6 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Cinema Near You */}
       <div className="section">
         <div className="section-header">
           <h3>Cinema Near You</h3>
@@ -72,7 +68,6 @@ const Home = () => {
 
         <div className="cinema-card">
           <div className="cinema-logo">
-            {/* cinema logo here */}
           </div>
 
           <div className="cinema-info">
@@ -86,7 +81,6 @@ const Home = () => {
 
         <div className="cinema-card">
           <div className="cinema-logo">
-            {/* cinema logo here */}
           </div>
 
           <div className="cinema-info">

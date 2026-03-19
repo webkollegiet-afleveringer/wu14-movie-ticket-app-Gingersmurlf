@@ -56,7 +56,7 @@ export default function Payment() {
             <h2>Your payment was successful</h2>
 
             <p>
-              Adele is a Scottish heiress whose extremely wealthy family owns estates and grounds.
+              Adele is a Scottish heiress whose extremely <br /> wealthy family owns estates and grounds. <br />
               When she was a teenager. Read More
             </p>
 
