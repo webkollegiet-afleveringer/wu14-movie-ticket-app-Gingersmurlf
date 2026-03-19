@@ -10,6 +10,7 @@ import Seats from "./components/seats";
 import Settings from "./components/settings";
 import Checkout from "./components/checkout";
 import Payment from "./components/payment";
+import Ticket from "./components/ticket";
 
 import "./scss/style.scss";
 
@@ -24,6 +25,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="settings" element={<Settings />} />
         <Route path="checkout" element={<Checkout />} />
         <Route path="payment" element={<Payment />} />
+        <Route path="ticket" element={<Ticket />} />
       </Route>
     </Routes>  
   </BrowserRouter>,

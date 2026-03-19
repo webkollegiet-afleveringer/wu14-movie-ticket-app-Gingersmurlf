@@ -50,7 +50,7 @@ export default function Payment() {
           <div className="success-card">
 
             <div className="success-icon">
-              <img src="/success-icon.png" alt="success" />
+              <img src="../public/images/shield.png" alt="success" />
             </div>
 
             <h2>Your payment was successful</h2>
