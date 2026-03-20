@@ -6,7 +6,7 @@ const Home = () => {
   const [movies, setMovies] = useState([]);
   const moviesToShow = movies.slice(0, 4);
 
-  const [user, setUser] = useState("John Doe");
+  const [user] = useState("John Doe");
 
   useEffect(() => {
     fetch(NOW_PLAYING_URL, API_OPTIONS)
@@ -17,8 +17,7 @@ const Home = () => {
 
   return (
     <div className="home">
-
-      {/* Header */}
+      {/* HEADER */}
       <div className="header">
         <div>
           <p className="welcome">Welcome Back,</p>
@@ -26,16 +25,16 @@ const Home = () => {
         </div>
 
         <div className="profile-pic">
-          {/* logo skal være her */}
+          <img src="/images/logo.png" alt="profile" />
         </div>
       </div>
 
-      {/* Search */}
+      {/* SEARCH */}
       <div className="search-bar">
         <input type="text" placeholder="Search your favourite movie" />
       </div>
 
-      {/*Billederne fra API */}
+      {/* COMING SOON */}
       <div className="section">
         <h3>Coming Soon</h3>
 
@@ -65,16 +64,17 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Cinema Near You */}
+      {/* CINEMAS */}
       <div className="section">
         <div className="section-header">
           <h3>Cinema Near You</h3>
           <span>See all</span>
         </div>
 
+        {/* CARD 1 */}
         <div className="cinema-card">
           <div className="cinema-logo">
-            {/* cinema logo here */}
+            <img src="/images/img-cinema.png" alt="Viva Cinema" />
           </div>
 
           <div className="cinema-info">
@@ -86,9 +86,10 @@ const Home = () => {
           <div className="rating">⭐ 4,9</div>
         </div>
 
+        {/* CARD 2 */}
         <div className="cinema-card">
           <div className="cinema-logo">
-            {/* cinema logo here */}
+            <img src="/images/ebonylife.png" alt="EbonyLife Cinema" />
           </div>
 
           <div className="cinema-info">
@@ -100,7 +101,6 @@ const Home = () => {
           <div className="rating">⭐ 5,0</div>
         </div>
       </div>
-
     </div>
   );
 };

@@ -1,0 +1,174 @@
+.saved {
+  min-height: 100vh;
+  background: #111827;
+  color: white;
+  padding: 20px;
+  font-family: sans-serif;
+}
+
+.saved-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 25px;
+
+  button {
+    position: absolute;
+    left: 0;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 22px;
+    cursor: pointer;
+  }
+
+  h1 {
+    font-size: 20px;
+  }
+}
+
+.plan {
+  margin-bottom: 30px;
+
+  h2 {
+    font-size: 16px;
+    margin-bottom: 15px;
+
+    span {
+      margin-right: 10px;
+      color: #9ca3af;
+    }
+  }
+}
+
+.movie-card {
+  display: flex;
+  align-items: center;
+  background: #1f2937;
+  padding: 12px;
+  border-radius: 14px;
+  margin-bottom: 20px;
+}
+
+.poster {
+  width: 55px;
+  height: 55px;
+  background: #374151;
+  border-radius: 10px;
+}
+
+.poster.empty {
+  background: #2d3748;
+}
+
+.movie-info {
+  flex: 1;
+  margin-left: 12px;
+
+  h3 {
+    font-size: 16px;
+  }
+
+  p {
+    font-size: 13px;
+    color: #9ca3af;
+  }
+}
+
+.tag {
+  font-size: 12px;
+  color: #60a5fa;
+}
+
+.tag.blue {
+  color: #3b82f6;
+}
+
+.rating {
+  font-weight: bold;
+  color: #facc15;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  label {
+    font-size: 13px;
+  }
+
+  select {
+    background: transparent;
+    border: 1px solid #374151;
+    border-radius: 10px;
+    padding: 10px;
+    color: white;
+  }
+}
+
+.row {
+  display: flex;
+  gap: 10px;
+
+  .field {
+    flex: 1;
+  }
+}
+
+.person-control {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #374151;
+  border-radius: 10px;
+  padding: 8px 10px;
+
+  button {
+    background: #3b82f6;
+    border: none;
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  span {
+    font-weight: bold;
+  }
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+// .checkout {
+//   flex: 1;
+//   background: #60a5fa;
+//   border: none;
+//   padding: 14px;
+//   border-radius: 14px;
+//   color: white;
+//   font-weight: bold;
+//   cursor: pointer;
+// }
+
+.delete {
+  width: 60px;
+  border: 1px solid #60a5fa;
+  background: transparent;
+  border-radius: 14px;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+}
