@@ -5,122 +5,220 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const app = express();
-const sql = neon(process.env.DATABASE_URL);
-
 app.use(express.json());
 
-/* ---------------- MOVIES ---------------- */
+const sql = neon(process.env.DATABASE_URL);
 
-// GET all movies
-app.get("/api/movies", async (req, res) => {
-  const data = await sql`SELECT * FROM cinema.movies`;
-  res.json(data);
+/* ===============================
+   🎯 GET SEATS FOR SHOWTIME
+================================ */
+app.get("/showtimes/:id/seats", async (req, res) => {
+  try {
+    const showtimeId = Number(req.params.id);
+
+    if (!Number.isInteger(showtimeId) || showtimeId <= 0) {
+      return res.status(400).json({ error: "Invalid showtime ID" });
+    }
+
+    // Get screen
+    const showtime = await sql`
+      SELECT screen_id FROM cinema.showtimes
+      WHERE id = ${showtimeId}
+      LIMIT 1
+    `;
+
+    if (showtime.length === 0) {
+      return res.status(404).json({ error: "Showtime not found" });
+    }
+
+    const screenId = showtime[0].screen_id;
+
+    // Get seats
+    const seats = await sql`
+      SELECT id, seat_number
+      FROM cinema.seats
+      WHERE screen_id = ${screenId}
+    `;
+
+    // Get booked
+    const bookedSeats = await sql`
+      SELECT seat_id
+      FROM cinema.bookings
+      WHERE showtime_id = ${showtimeId}
+    `;
+
+    // Get locked (only valid locks)
+    const lockedSeats = await sql`
+      SELECT seat_id
+      FROM cinema.seat_locks
+      WHERE showtime_id = ${showtimeId}
+      AND locked_until > NOW()
+    `;
+
+    const bookedSet = new Set(bookedSeats.map(b => b.seat_id));
+    const lockedSet = new Set(lockedSeats.map(l => l.seat_id));
+
+    const available = [];
+    const booked = [];
+    const locked = [];
+
+    for (const seat of seats) {
+      if (bookedSet.has(seat.id)) {
+        booked.push(seat.seat_number);
+      } else if (lockedSet.has(seat.id)) {
+        locked.push(seat.seat_number);
+      } else {
+        available.push(seat.seat_number);
+      }
+    }
+
+    res.json({
+      screen_id: screenId,
+      total_seats: seats.length,
+      available,
+      locked,
+      booked
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal server error" });
+  }
 });
 
-// POST movie
-app.post("/api/movies", async (req, res) => {
-  const { title, release_year } = req.body;
 
-  const result = await sql`
-    INSERT INTO cinema.movies (title, release_year)
-    VALUES (${title}, ${release_year})
-    RETURNING *
-  `;
-  res.json(result[0]);
+/* ===============================
+   🔒 LOCK SEAT (2 MIN)
+================================ */
+app.post("/locks", async (req, res) => {
+  try {
+    const showtime_id = Number(req.body.showtime_id);
+    const seat_id = Number(req.body.seat_id);
+
+    if (!showtime_id || !seat_id) {
+      return res.status(400).json({ error: "Missing fields" });
+    }
+
+    const lockUntil = new Date(Date.now() + 2 * 60 * 1000);
+
+    // Check if already booked
+    const booked = await sql`
+      SELECT 1 FROM cinema.bookings
+      WHERE showtime_id = ${showtime_id}
+      AND seat_id = ${seat_id}
+    `;
+
+    if (booked.length > 0) {
+      return res.status(409).json({ error: "Seat already booked" });
+    }
+
+    // Check active lock
+    const existingLock = await sql`
+      SELECT 1 FROM cinema.seat_locks
+      WHERE showtime_id = ${showtime_id}
+      AND seat_id = ${seat_id}
+      AND locked_until > NOW()
+    `;
+
+    if (existingLock.length > 0) {
+      return res.status(409).json({ error: "Seat is locked" });
+    }
+
+    // Insert / update lock
+    await sql`
+      INSERT INTO cinema.seat_locks (showtime_id, seat_id, locked_until)
+      VALUES (${showtime_id}, ${seat_id}, ${lockUntil})
+      ON CONFLICT (showtime_id, seat_id)
+      DO UPDATE SET locked_until = ${lockUntil}
+    `;
+
+    res.json({
+      message: "Seat locked",
+      locked_until: lockUntil
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal server error" });
+  }
 });
 
-/* ---------------- CINEMAS ---------------- */
 
-app.get("/api/cinemas", async (req, res) => {
-  const data = await sql`SELECT * FROM cinema.cinemas`;
-  res.json(data);
+/* ===============================
+   🎟️ CREATE BOOKING
+================================ */
+app.post("/bookings", async (req, res) => {
+  try {
+    const showtime_id = Number(req.body.showtime_id);
+    const seat_id = Number(req.body.seat_id);
+    const user_name = req.body.user_name || "Guest";
+
+    if (!showtime_id || !seat_id) {
+      return res.status(400).json({ error: "Missing fields" });
+    }
+
+    // Check valid lock
+    const lock = await sql`
+      SELECT 1 FROM cinema.seat_locks
+      WHERE showtime_id = ${showtime_id}
+      AND seat_id = ${seat_id}
+      AND locked_until > NOW()
+    `;
+
+    if (lock.length === 0) {
+      return res.status(409).json({ error: "Seat not locked or expired" });
+    }
+
+    // Create booking
+    const result = await sql`
+      INSERT INTO cinema.bookings (showtime_id, seat_id, user_name)
+      VALUES (${showtime_id}, ${seat_id}, ${user_name})
+      RETURNING *
+    `;
+
+    // Remove lock
+    await sql`
+      DELETE FROM cinema.seat_locks
+      WHERE showtime_id = ${showtime_id}
+      AND seat_id = ${seat_id}
+    `;
+
+    res.status(201).json(result[0]);
+
+  } catch (err) {
+    console.error(err);
+
+    // Handle unique constraint (extra safety)
+    if (err.code === "23505") {
+      return res.status(409).json({ error: "Seat already booked" });
+    }
+
+    res.status(500).json({ error: "Internal server error" });
+  }
 });
 
-app.post("/api/cinemas", async (req, res) => {
-  const { name, location } = req.body;
 
-  const result = await sql`
-    INSERT INTO cinema.cinemas (name, location)
-    VALUES (${name}, ${location})
-    RETURNING *
-  `;
-  res.json(result[0]);
+/* ===============================
+   🧹 CLEAN EXPIRED LOCKS
+================================ */
+app.delete("/locks/cleanup", async (req, res) => {
+  try {
+    await sql`
+      DELETE FROM cinema.seat_locks
+      WHERE locked_until < NOW()
+    `;
+
+    res.json({ message: "Expired locks removed" });
+
+  } catch (err) {
+    res.status(500).json({ error: "Internal server error" });
+  }
 });
 
-/* ---------------- SCREENS ---------------- */
 
-app.get("/api/screens", async (req, res) => {
-  const data = await sql`SELECT * FROM cinema.screens`;
-  res.json(data);
-});
-
-app.post("/api/screens", async (req, res) => {
-  const { cinema_id, name } = req.body;
-
-  const result = await sql`
-    INSERT INTO cinema.screens (cinema_id, name)
-    VALUES (${cinema_id}, ${name})
-    RETURNING *
-  `;
-  res.json(result[0]);
-});
-
-/* ---------------- SEATS ---------------- */
-
-app.get("/api/seats", async (req, res) => {
-  const data = await sql`SELECT * FROM cinema.seats`;
-  res.json(data);
-});
-
-app.post("/api/seats", async (req, res) => {
-  const { screen_id, seat_number } = req.body;
-
-  const result = await sql`
-    INSERT INTO cinema.seats (screen_id, seat_number)
-    VALUES (${screen_id}, ${seat_number})
-    RETURNING *
-  `;
-  res.json(result[0]);
-});
-
-/* ---------------- SHOWTIMES ---------------- */
-
-app.get("/api/showtimes", async (req, res) => {
-  const data = await sql`SELECT * FROM cinema.showtimes`;
-  res.json(data);
-});
-
-app.post("/api/showtimes", async (req, res) => {
-  const { movie_id, screen_id, start_time } = req.body;
-
-  const result = await sql`
-    INSERT INTO cinema.showtimes (movie_id, screen_id, start_time)
-    VALUES (${movie_id}, ${screen_id}, ${start_time})
-    RETURNING *
-  `;
-  res.json(result[0]);
-});
-
-/* ---------------- BOOKINGS ---------------- */
-
-app.get("/api/bookings", async (req, res) => {
-  const data = await sql`SELECT * FROM cinema.bookings`;
-  res.json(data);
-});
-
-app.post("/api/bookings", async (req, res) => {
-  const { showtime_id, seat_id, user_name } = req.body;
-
-  const result = await sql`
-    INSERT INTO cinema.bookings (showtime_id, seat_id, user_name)
-    VALUES (${showtime_id}, ${seat_id}, ${user_name})
-    RETURNING *
-  `;
-  res.json(result[0]);
-});
-
-/* ---------------- START SERVER ---------------- */
-
+/* ===============================
+   🚀 START SERVER
+================================ */
 app.listen(3000, () => {
   console.log("Server running on http://localhost:3000 🚀");
 });
