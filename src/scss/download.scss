@@ -6,14 +6,12 @@
   position: relative;
 }
 
-/* BAGGRUND TICKET */
 .ticket-bg {
   padding: 20px;
-  opacity: 0.6;           // 👈 synlig men dæmpet
-  transform: scale(0.95); // 👈 depth effekt
+  opacity: 0.6;
+  transform: scale(0.95);
 }
 
-/* TICKET */
 .ticket-card {
   background: #fff;
   color: #000;
@@ -69,12 +67,11 @@
   }
 }
 
-/* OVERLAY */
 .success-overlay {
   position: fixed;
   inset: 0;
 
-  background: rgba(0, 0, 0, 0.35); // 👈 vigtig fix
+  background: rgba(0, 0, 0, 0.35);
   backdrop-filter: blur(4px);
 
   display: flex;

@@ -42,7 +42,6 @@
   }
 }
 
-/* MOVIE CARD */
 .movie-card {
   display: flex;
   align-items: center;
@@ -91,7 +90,6 @@
   color: #facc15;
 }
 
-/* FORM */
 .form {
   display: flex;
   flex-direction: column;
@@ -154,16 +152,16 @@
   margin-top: 20px;
 }
 
-.checkout {
-  flex: 1;
-  background: #60a5fa;
-  border: none;
-  padding: 14px;
-  border-radius: 14px;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-}
+// .checkout {
+//   flex: 1;
+//   background: #60a5fa;
+//   border: none;
+//   padding: 14px;
+//   border-radius: 14px;
+//   color: white;
+//   font-weight: bold;
+//   cursor: pointer;
+// }
 
 .delete {
   width: 60px;

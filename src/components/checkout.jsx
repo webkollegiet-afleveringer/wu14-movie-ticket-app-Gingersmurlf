@@ -34,7 +34,7 @@ export default function Checkout() {
           <span className="change">Change</span>
         </div>
         
-        <div className="card-balance">$********</div>
+        <div className="card-balance">$</div>
         <div className="card-holder">*********</div>
         <div className="card-number">**** **** **** ****</div>
       </div>
