@@ -1,11 +1,14 @@
 import React from "react";
+import { useNavigate } from "react-router";
 import "../scss/ticket.scss";
 
 const Ticket = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="ticket-page">
       <div className="header">
-        <span className="back">←</span>
+        <span className="back" onClick={() => navigate(-1)}>←</span>
         <h2>E-Ticket</h2>
       </div>
 
@@ -67,15 +70,12 @@ const Ticket = () => {
         <div className="barcode"></div>
       </div>
 
-        {/* <button onClick={() => navigate("/download")}>
-              Download E-Ticket
-            </button> */}
-
-            <button className="download-btn">Download E-Ticket</button>
-
-            {/* <button className="download-btn" onClick={() => navigate("/download")}>
-              Download E-Ticket
-            </button> */}
+      <button
+        className="download-btn"
+        onClick={() => navigate("/download")}
+      >
+        Download E-Ticket
+      </button>
     </div>
   );
 };
