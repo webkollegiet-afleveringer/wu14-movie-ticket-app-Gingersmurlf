@@ -6,36 +6,98 @@
   position: relative;
 }
 
+/* BAGGRUND TICKET */
 .ticket-bg {
   padding: 20px;
-  opacity: 0.2;
-  text-align: center;
+  opacity: 0.6;           // 👈 synlig men dæmpet
+  transform: scale(0.95); // 👈 depth effekt
 }
 
+/* TICKET */
+.ticket-card {
+  background: #fff;
+  color: #000;
+  border-radius: 20px;
+  padding: 20px;
+  max-width: 340px;
+  margin: 0 auto;
+
+  .ticket-header {
+    display: flex;
+    justify-content: space-between;
+
+    .e-ticket {
+      color: red;
+      font-size: 12px;
+    }
+  }
+
+  .ticket-body {
+    margin-top: 15px;
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+
+      span {
+        font-size: 12px;
+        color: #6b7280;
+      }
+
+      strong {
+        display: block;
+        font-size: 14px;
+      }
+    }
+  }
+
+  .divider {
+    margin: 20px 0;
+    border-top: 1px dashed #ccc;
+  }
+
+  .barcode {
+    height: 60px;
+    background: repeating-linear-gradient(
+      90deg,
+      #000,
+      #000 2px,
+      #fff 2px,
+      #fff 4px
+    );
+  }
+}
+
+/* OVERLAY */
 .success-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(6px);
+
+  background: rgba(0, 0, 0, 0.35); // 👈 vigtig fix
+  backdrop-filter: blur(4px);
+
   display: flex;
   align-items: flex-end;
   justify-content: center;
 }
 
+/* BLÅ BOX */
 .success-card {
-  height: 100%;
-  max-height: 400px;
   width: 100%;
   max-width: 430px;
+  height: 100%;
+  max-height: 400px;
 
   background: linear-gradient(180deg, #60a5fa, #3b82f6);
-  border-radius: 50px 50px 0 0;
+  border-radius: 40px 40px 0 0;
 
   padding: 80px 20px 30px;
   text-align: center;
   position: relative;
 }
 
+/* IKON */
 .success-icon {
   position: absolute;
   top: -45px;
@@ -58,6 +120,7 @@
   }
 }
 
+/* TEKST */
 .success-card h2 {
   margin-bottom: 10px;
 }
@@ -68,6 +131,7 @@
   color: #e0f2fe;
 }
 
+/* KNAP */
 .success-card button {
   width: 100%;
   padding: 14px;

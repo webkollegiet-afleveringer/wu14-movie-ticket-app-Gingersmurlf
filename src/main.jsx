@@ -7,13 +7,13 @@ import App from "./App.jsx";
 import Home from "./components/home";
 import Explore from "./components/explore";
 import Details from "./components/details";
-
 import Seats from "./components/seats";
 import Settings from "./components/settings";
 import Checkout from "./components/checkout";
 import Payment from "./components/payment";
 import Ticket from "./components/ticket";
 import Download from "./components/download";
+import Saved from "./components/saved";
 
 import "./scss/style.scss";
 
@@ -30,6 +30,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Route path="payment" element={<Payment />} />
           <Route path="ticket" element={<Ticket />} />
           <Route path="download" element={<Download />} />
+          <Route path="saved" element={<Saved />} />
         </Route>
       </Routes>  
     </BrowserRouter>

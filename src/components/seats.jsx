@@ -27,8 +27,29 @@ export default function Seats() {
   const [date, setDate] = useState(dates[0].id);
   const [time, setTime] = useState(times[0].id);
 
+  // 🎟 Seats setup
+  const rows = 6;
+  const cols = 8;
+
+  const seats = Array.from({ length: rows }, (_, r) =>
+    Array.from({ length: cols }, (_, c) => `${String.fromCharCode(65 + r)}${c + 1}`)
+  );
+
+  const [booked] = useState(["C3", "C4", "D5", "E1", "E2"]);
+  const [selected, setSelected] = useState([]);
+
+  const toggleSeat = (seat) => {
+    if (booked.includes(seat)) return;
+
+    setSelected((prev) =>
+      prev.includes(seat)
+        ? prev.filter((s) => s !== seat)
+        : [...prev, seat]
+    );
+  };
+
   const handleBookTicket = () => {
-    console.log("Ticket booked:", cinema, date, time);
+    console.log("Ticket booked:", { cinema, date, time, selected });
     navigate("/checkout");
   };
 
@@ -41,6 +62,7 @@ export default function Seats() {
         <h1>Select Seats</h1>
       </header>
 
+      {/* FORM */}
       <div className="ticket-form">
         <div className="field">
           <label>Cinema</label>
@@ -78,6 +100,45 @@ export default function Seats() {
         </div>
       </div>
 
+      {/* SCREEN */}
+      <div className="screen" />
+
+      {/* SEATS */}
+      <div className="seats">
+        {seats.map((row, i) => (
+          <div key={i} className="seat-row">
+            {row.map((seat, index) => {
+              let className = "seat";
+
+              if (booked.includes(seat)) className += " booked";
+              else if (selected.includes(seat)) className += " selected";
+
+              return (
+                <div
+                  key={seat}
+                  className={className}
+                  onClick={() => toggleSeat(seat)}
+                />
+              );
+            })}
+          </div>
+        ))}
+      </div>
+
+      {/* LEGEND */}
+      <div className="legend">
+        <span>
+          <div className="dot selected" /> Selected
+        </span>
+        <span>
+          <div className="dot booked" /> Reserved
+        </span>
+        <span>
+          <div className="dot" /> Available
+        </span>
+      </div>
+
+      {/* BUTTON */}
       <section className="btn">
         <button className="primary-btn" onClick={handleBookTicket}>
           Checkout
